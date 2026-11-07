@@ -1,0 +1,195 @@
+name: Autograding Tests
+
+on: [push]
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      # 1
+      - name: Occupied seats cannot be selected
+        id: bug-occupied-seats
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Occupied seats cannot be selected
+          command: npm test -- --run -t "Occupied seats cannot be selected"
+          timeout: 15
+          max-score: 10
+
+      # 2
+      - name: The total price updates when seats are assigned
+        id: bug-total-price
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: The total price updates when seats are assigned
+          command: npm test -- --run -t "The total price updates when seats are assigned"
+          timeout: 15
+          max-score: 10
+
+      # 3
+      - name: Clicking Clear seat does not change the active passenger
+        id: bug-clear-seat
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Clicking Clear seat does not change the active passenger
+          command: npm test -- --run -t "Clicking Clear seat does not change the active passenger"
+          timeout: 15
+          max-score: 10
+
+      # 4
+      - name: A seat assigned to another passenger cannot be taken
+        id: seat-taken
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: A seat assigned to another passenger cannot be taken
+          command: npm test -- --run -t "A seat assigned to another passenger cannot be taken"
+          timeout: 15
+          max-score: 10
+
+      # 5
+      - name: Clearing a seat frees it and updates the total
+        id: seat-clear
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Clearing a seat frees it and updates the total
+          command: npm test -- --run -t "Clearing a seat frees it and updates the total"
+          timeout: 15
+          max-score: 8
+
+      # 6
+      - name: A passenger can be added with the form
+        id: passenger-add
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: A passenger can be added with the form
+          command: npm test -- --run -t "A passenger can be added with the form"
+          timeout: 15
+          max-score: 7
+
+      # 7
+      - name: An empty name shows an error and no passenger is added
+        id: passenger-empty-name
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: An empty name shows an error and no passenger is added
+          command: npm test -- --run -t "An empty name shows an error and no passenger is added"
+          timeout: 15
+          max-score: 6
+
+      # 8
+      - name: No more than 4 passengers can be added
+        id: passenger-max
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: No more than 4 passengers can be added
+          command: npm test -- --run -t "No more than 4 passengers can be added"
+          timeout: 15
+          max-score: 5
+
+      # 9
+      - name: Removing a passenger frees their seat
+        id: passenger-remove
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Removing a passenger frees their seat
+          command: npm test -- --run -t "Removing a passenger frees their seat"
+          timeout: 15
+          max-score: 6
+
+      # 10
+      - name: Removing the active passenger makes the first passenger active
+        id: passenger-remove-active
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Removing the active passenger makes the first passenger active
+          command: npm test -- --run -t "Removing the active passenger makes the first passenger active"
+          timeout: 15
+          max-score: 4
+
+      # 11
+      - name: The last passenger cannot be removed
+        id: passenger-last
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: The last passenger cannot be removed
+          command: npm test -- --run -t "The last passenger cannot be removed"
+          timeout: 15
+          max-score: 4
+
+      # 12
+      - name: Confirm booking is enabled only when every passenger has a seat
+        id: confirm-enabled
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Confirm booking is enabled only when every passenger has a seat
+          command: npm test -- --run -t "Confirm booking is enabled only when every passenger has a seat"
+          timeout: 15
+          max-score: 5
+
+      # 13
+      - name: Confirming shows a summary of the booking
+        id: confirm-summary
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Confirming shows a summary of the booking
+          command: npm test -- --run -t "Confirming shows a summary of the booking"
+          timeout: 15
+          max-score: 5
+
+      # 14
+      - name: Edit booking returns to the seat map with the selections kept
+        id: confirm-edit
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Edit booking returns to the seat map with the selections kept
+          command: npm test -- --run -t "Edit booking returns to the seat map with the selections kept"
+          timeout: 15
+          max-score: 5
+
+      # 15
+      - name: Code passes the linter
+        id: lint
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Code passes the linter
+          command: npm run lint
+          timeout: 10
+          max-score: 5
+
+      # Reporter
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          BUG-OCCUPIED-SEATS_RESULTS: ${{ steps.bug-occupied-seats.outputs.result }}
+          BUG-TOTAL-PRICE_RESULTS: ${{ steps.bug-total-price.outputs.result }}
+          BUG-CLEAR-SEAT_RESULTS: ${{ steps.bug-clear-seat.outputs.result }}
+          SEAT-TAKEN_RESULTS: ${{ steps.seat-taken.outputs.result }}
+          SEAT-CLEAR_RESULTS: ${{ steps.seat-clear.outputs.result }}
+          PASSENGER-ADD_RESULTS: ${{ steps.passenger-add.outputs.result }}
+          PASSENGER-EMPTY-NAME_RESULTS: ${{ steps.passenger-empty-name.outputs.result }}
+          PASSENGER-MAX_RESULTS: ${{ steps.passenger-max.outputs.result }}
+          PASSENGER-REMOVE_RESULTS: ${{ steps.passenger-remove.outputs.result }}
+          PASSENGER-REMOVE-ACTIVE_RESULTS: ${{ steps.passenger-remove-active.outputs.result }}
+          PASSENGER-LAST_RESULTS: ${{ steps.passenger-last.outputs.result }}
+          CONFIRM-ENABLED_RESULTS: ${{ steps.confirm-enabled.outputs.result }}
+          CONFIRM-SUMMARY_RESULTS: ${{ steps.confirm-summary.outputs.result }}
+          CONFIRM-EDIT_RESULTS: ${{ steps.confirm-edit.outputs.result }}
+          LINT_RESULTS: ${{ steps.lint.outputs.result }}
+        with:
+          runners: bug-occupied-seats,bug-total-price,bug-clear-seat,seat-taken,seat-clear,passenger-add,passenger-empty-name,passenger-max,passenger-remove,passenger-remove-active,passenger-last,confirm-enabled,confirm-summary,confirm-edit,lint

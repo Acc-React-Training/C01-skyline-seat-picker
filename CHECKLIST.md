@@ -1,0 +1,16 @@
+- Occupied seats cannot be selected
+- The total price updates when seats are assigned
+- Clicking "Clear seat" does not change the active passenger
+- A seat assigned to another passenger cannot be taken
+- Picking a new seat frees the passenger's previous seat
+- Clearing a seat frees it and updates the total
+- A passenger can be added with the form, and the input is cleared
+- An empty name shows the error "Name is required" and no passenger is added
+- No more than 4 passengers can be added
+- Removing a passenger frees their seat
+- Removing the active passenger makes the first passenger active
+- The last passenger cannot be removed
+- "Confirm booking" is enabled only when every passenger has a seat
+- Confirming shows a "Booking confirmed" screen with each passenger, their seat and the total
+- "Edit booking" returns to the seat map with all passengers and seats kept
+- The code passes the linter (`npm run lint`), does not mutate state directly and avoids redundant state
