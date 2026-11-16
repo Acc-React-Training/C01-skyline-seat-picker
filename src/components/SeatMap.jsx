@@ -36,8 +36,10 @@ export default function SeatMap({
                 <Seat
                   key={seat.id}
                   seat={seat}
-                  isOccupied={seat.occupied}
-                  passengerInitials={passenger ? getInitials(passenger.name) : null}
+                  occupied={seat.occupied}
+                  passengerInitials={
+                    passenger ? getInitials(passenger.name) : null
+                  }
                   isActivePassengerSeat={passenger?.id === activePassengerId}
                   onSelect={onSelectSeat}
                 />

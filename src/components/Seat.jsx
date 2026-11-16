@@ -27,7 +27,7 @@ export default function Seat({
       title={label}
       onClick={() => onSelect(seat.id)}
     >
-      {occupied ? "×" : passengerInitials ?? seat.column}
+      {occupied ? "×" : (passengerInitials ?? seat.column)}
     </button>
   );
 }

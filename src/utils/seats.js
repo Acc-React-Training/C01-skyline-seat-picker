@@ -32,7 +32,7 @@ function createSeat(row, column) {
 // Returns the seat map as an array of rows: [[1A, 1B, ...], [2A, 2B, ...], ...]
 export function buildSeatRows() {
   return Array.from({ length: ROWS }, (_, index) =>
-    COLUMNS.map((column) => createSeat(index + 1, column))
+    COLUMNS.map((column) => createSeat(index + 1, column)),
   );
 }
 
@@ -50,7 +50,7 @@ export function calculateTotal(passengers) {
   return passengers.reduce(
     (total, passenger) =>
       passenger.seatId ? total + getSeatPrice(passenger.seatId) : total,
-    0
+    0,
   );
 }
 

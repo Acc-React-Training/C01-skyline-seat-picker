@@ -3,6 +3,7 @@ export default function PassengerList({
   activePassengerId,
   onSelectPassenger,
   onClearSeat,
+  onRemovePassenger,
 }) {
   return (
     <section className="panel">
@@ -16,6 +17,7 @@ export default function PassengerList({
             isActive={passenger.id === activePassengerId}
             onSelect={() => onSelectPassenger(passenger.id)}
             onClearSeat={() => onClearSeat(passenger.id)}
+            onRemovePassengerId={() => onRemovePassenger(passenger.id)}
           />
         ))}
       </ul>
@@ -23,7 +25,23 @@ export default function PassengerList({
   );
 }
 
-function PassengerCard({ passenger, isActive, onSelect, onClearSeat }) {
+function PassengerCard({
+  passenger,
+  isActive,
+  onSelect,
+  onClearSeat,
+  onRemovePassengerId,
+}) {
+  function handleOnClearSeat(event) {
+    event.stopPropagation();
+    onClearSeat();
+  }
+
+  function handleRemoveClic(event) {
+    event.stopPropagation();
+    onRemovePassengerId();
+  }
+
   return (
     <li
       data-testid="passenger-card"
@@ -39,11 +57,17 @@ function PassengerCard({ passenger, isActive, onSelect, onClearSeat }) {
       </div>
       <div className="passenger-actions">
         {passenger.seatId && (
-          <button type="button" className="btn-link" onClick={onClearSeat}>
+          <button
+            type="button"
+            className="btn-link"
+            onClick={handleOnClearSeat}
+          >
             Clear seat
           </button>
         )}
-        {/* TODO: add the "Remove" button */}
+        <button className="btn-danger-link" onClick={handleRemoveClic}>
+          Remove
+        </button>
       </div>
     </li>
   );

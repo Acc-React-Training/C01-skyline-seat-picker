@@ -4,12 +4,22 @@ body {
   @apply bg-slate-100 text-slate-900 antialiased;
 }
 
-h1 { @apply text-3xl; }
-h2 { @apply text-xl; }
-h3 { @apply text-lg; }
+h1 {
+  @apply text-3xl;
+}
+h2 {
+  @apply text-xl;
+}
+h3 {
+  @apply text-lg;
+}
 
 input {
   @apply border border-slate-300 rounded-md px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-400;
+}
+
+.passenger-input {
+  margin-top: 0.5rem;
 }
 
 .btn-primary {

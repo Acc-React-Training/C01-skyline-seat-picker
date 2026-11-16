@@ -16,10 +16,10 @@ const LUIS = "Luis Pérez";
 
 const cards = () => screen.queryAllByTestId("passenger-card");
 
-const cardOf = (name) =>
-  cards().find((card) => within(card).queryByText(name));
+const cardOf = (name) => cards().find((card) => within(card).queryByText(name));
 
-const seatTextOf = (name) => within(cardOf(name)).getByText(/^(seat \w+|no seat)$/i);
+const seatTextOf = (name) =>
+  within(cardOf(name)).getByText(/^(seat \w+|no seat)$/i);
 
 const isActive = (name) => cardOf(name).getAttribute("aria-current") === "true";
 
@@ -47,7 +47,8 @@ const removeButtonOf = (name) =>
   within(cardOf(name)).queryByRole("button", { name: /remove/i });
 
 const nameInput = () => screen.queryByLabelText(/passenger name/i);
-const addButton = () => screen.queryByRole("button", { name: /add passenger/i });
+const addButton = () =>
+  screen.queryByRole("button", { name: /add passenger/i });
 
 async function addPassenger(user, name) {
   const input = nameInput();
@@ -95,7 +96,9 @@ describe("Part 1: bug fixes", () => {
     await pickSeat(user, LUIS, "3C");
     await activate(user, ANA);
 
-    await user.click(within(cardOf(LUIS)).getByRole("button", { name: /clear seat/i }));
+    await user.click(
+      within(cardOf(LUIS)).getByRole("button", { name: /clear seat/i }),
+    );
 
     expect(seatTextOf(LUIS)).toHaveTextContent(/^no seat$/i);
     expect(isActive(ANA)).toBe(true);
@@ -130,7 +133,9 @@ describe("Part 2: seats", () => {
     await pickSeat(user, ANA, "2C");
     expectTotal(35);
 
-    await user.click(within(cardOf(ANA)).getByRole("button", { name: /clear seat/i }));
+    await user.click(
+      within(cardOf(ANA)).getByRole("button", { name: /clear seat/i }),
+    );
     expectTotal(0);
 
     await pickSeat(user, LUIS, "2C");
@@ -242,7 +247,7 @@ describe("Part 4: confirmation", () => {
     await user.click(confirmButton());
 
     expect(
-      screen.getByRole("heading", { name: /booking confirmed/i })
+      screen.getByRole("heading", { name: /booking confirmed/i }),
     ).toBeInTheDocument();
     expect(allSeatButtons()).toHaveLength(0);
 

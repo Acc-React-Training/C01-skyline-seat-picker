@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { calculateTotal, getSeatPrice } from "../utils/seats";
 
-export default function BookingSummary({ passengers }) {
-  const [total] = useState(calculateTotal(passengers));
+export default function BookingSummary({ passengers, bookedConfirmed }) {
+  let total = calculateTotal(passengers);
+  const everyoneHasSeat = passengers.every((passengers) => passengers.seatId);
 
   return (
     <section className="panel">
@@ -22,7 +22,14 @@ export default function BookingSummary({ passengers }) {
       <p data-testid="booking-total" className="summary-total">
         Total: ${total}
       </p>
-      {/* TODO: add the "Confirm booking" button */}
+      <button
+        type="button"
+        className="btn-primary"
+        disabled={!everyoneHasSeat}
+        onClick={() => bookedConfirmed(true)}
+      >
+        Confirm booking
+      </button>
     </section>
   );
 }
